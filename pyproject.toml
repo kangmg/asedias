@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asedias"
+version = "0.0.1"
+description = "ase compatible distortion interaction analysis (activation strain analysis)"
+authors = [
+    { name = "Mingi KANG", email = "kangmg@korea.ac.kr" }
+]
+dependencies = [
+    "ase",
+    "numpy",
+    "matplotlib",
+    "tqdm"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["asedias*"]
