@@ -27,22 +27,6 @@ if in_ipython():
     from IPython.display import clear_output
 
 
-class Fragment:
-    """
-    Represents a molecular fragment with index, charge, spin, name, constraints,
-    and stores optimized energy and optimized atoms.
-    """
-    def __init__(self, index: list[int], charge: Optional[int] = None, spin: Optional[int] = None,
-                 frag_name: Optional[str] = None, constraints: Optional[list[int]] = None):
-        self.index = index
-        self.charge = charge
-        self.spin = spin
-        self.name = frag_name
-        self.constraints = constraints
-        self.optimized_energy = None
-        self.optimized_atoms = None
-
-
 class Progress:
     RED = '\033[31m'
     GREEN = '\033[32m'
@@ -91,20 +75,39 @@ class Progress:
         self.display_summary()
 
 
+class Fragment:
+    """
+    Represents a molecular fragment with index, charge, spin, name, constraints,
+    and stores optimized energy and optimized atoms.
+    """
+    def __init__(self, index: list[int], charge: Optional[int] = None, spin: Optional[int] = None,
+                 frag_name: Optional[str] = None, constraints: Optional[list[int]] = None):
+        self.index = index
+        self.charge = charge
+        self.spin = spin
+        self.name = frag_name
+        self.constraints = constraints
+        self.optimized_energy = None
+        self.optimized_atoms = None
+
+
 class aseDIAS:
     """
     Main class to run distortion-interaction analysis with fragment optimization caching.
     """
-    def __init__(self, fragments: list, images: Union[list[ase.Atoms], ase.io.Trajectory],
+    def __init__(self, fragments: list[Fragment], images: Union[list[ase.Atoms], ase.io.Trajectory],
                  calc_attach: Callable[[ase.Atoms], None],
                  precalc_attach: Optional[Callable[[ase.Atoms], None]] = None,
-                 job_name: Optional[str] = None):
+                 job_name: Optional[str] = None, total_spin: Optional[int] = 0):
         self.fragments = fragments
         self.images = images
         self.calc_attach = calc_attach
         self.precalc_attach = precalc_attach
         self.job_name = job_name if job_name else str(uuid.uuid4())[:6]
         self.resultDict = dict()
+
+        self.total_charge = sum([frag.charge for frag in self.fragments])
+        self.total_spin = total_spin
 
     def run(self):
         from asedias import ParameterManager
@@ -121,7 +124,8 @@ class aseDIAS:
         progress.start_step("Total Energies", total=len(self.images))
         self.resultDict["total_energies"] = []
         calc_copy = copy.deepcopy(self.images[0])
-        self.calc_attach(calc_copy)
+
+        self.calc_attach(calc_copy, charge=self.total_charge, spin=self.total_spin)
 
         for atoms in self.images:
             total_energy = calc_copy.calc.get_potential_energy(atoms)
