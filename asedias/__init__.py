@@ -19,6 +19,7 @@ class Parameters:
         self.hline = True
         self.include_fragments = True
         self.yaxis_unit = "eV"
+        self.relative_inx = 0
 
     def __str__(self):
         max_key_len = max(len(k) for k in self.__dict__)

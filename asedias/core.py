@@ -212,7 +212,7 @@ class aseDIAS:
         progress.finish_step()
 
 
-    def plot(self, include_fragments=None, yaxis_unit=None, geometric_indices=None, **kwargs):
+    def plot(self, include_fragments=None, yaxis_unit=None, geometric_indices=None, relative_idx=None, **kwargs):
         """
         Plot the results of the distortion interaction analysis.
 
@@ -225,7 +225,8 @@ class aseDIAS:
         from asedias import ParameterManager
         marker = kwargs.get('marker', ParameterManager.marker)
         linestyle = kwargs.get('linestyle', ParameterManager.linestyle)
-        hline = kwargs.get('hline', ParameterManager.hline)\
+        hline = kwargs.get('hline', ParameterManager.hline)
+        relative_idx = kwargs.get('relative_idx', ParameterManager.relative_idx)
         
         include_fragments = include_fragments if include_fragments is not None else ParameterManager.include_fragments
         yaxis_unit = yaxis_unit if yaxis_unit is not None else ParameterManager.yaxis_unit
