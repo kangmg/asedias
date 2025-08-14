@@ -154,8 +154,8 @@ class aseDIAS:
             if self.precalc_attach:
                 self.precalc_attach(frag_copy, spin=frag_spin, charge=frag_charge)
                 preopt = ParameterManager.optimizer(frag_copy)
-                preopt.run(steps=ParameterManager.preParameterManager.opt_steps,
-                           fmax=ParameterManager.preParameterManager.opt_fmax)
+                preopt.run(steps=ParameterManager.opt_steps,
+                           fmax=ParameterManager.opt_fmax)
 
             # Optimization
             self.calc_attach(frag_copy, spin=frag_spin, charge=frag_charge)
