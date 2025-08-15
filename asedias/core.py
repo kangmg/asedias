@@ -1,15 +1,10 @@
 import ase
 from ase.optimize import BFGS
 from ase.constraints import FixAtoms
-from typing import Callable, Union, Optional
 import time
 import uuid
 from typing import Callable, Union, Optional
-import ase
-from ase.optimize import BFGS
-from ase.constraints import FixAtoms
-import copy 
-from ase.constraints import FixAtoms
+import copy
 from asedias.plot import plot_dias
 from asedias.utils import json_dump
 from tqdm import tqdm
